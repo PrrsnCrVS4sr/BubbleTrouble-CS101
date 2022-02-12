@@ -1,14 +1,16 @@
 #include <simplecpp>
 #include <ctime>
+#include <chrono>
 #include "shooter.h"
 #include "bubble.h"
 
-
+using namespace std::chrono;
 /* Simulation Vars */
-const double STEP_TIME = 0.02;
+const double STEP_TIME = 0.01;
 
 /* Game Vars */
 int LEVEL_INDEX =1; //tells you which level you're on
+const double FIRE_RATE= 2;
 const int PLAY_Y_HEIGHT = 450;
 const int LEFT_MARGIN = 70;
 const int RIGHT_MARGIN = WINDOW_X - 70;
@@ -157,13 +159,13 @@ string to_string(int n)  // converts integer to a string
 
 }
 
-void StartLevel(int levelIndex,vector<Bubble>* bubbles)
+void StartLevel(int levelIndex,vector<Bubble>& bubbles)
 {
 
     Text LevelStartText(WINDOW_X/2,WINDOW_Y/2,"Level: " + to_string(levelIndex));
     LevelStartText.setColor(COLOR("red"));
     wait(0.75);
-    *bubbles = create_bubbles(levelIndex);
+    bubbles = create_bubbles(levelIndex);
 }
 
 void GameOver(string condition)
@@ -218,7 +220,7 @@ int main()
 
         // Initialize the bubbles
         vector<Bubble> bubbles;
-        StartLevel(LEVEL_INDEX,&bubbles);
+        StartLevel(LEVEL_INDEX,bubbles);
         // Intialize the shooter
         Shooter shooter(SHOOTER_START_X, SHOOTER_START_Y, SHOOTER_VX);
 
@@ -260,12 +262,15 @@ int main()
 
         bool has_collided_with_player = false;
         double track_time = TIME;
+        high_resolution_clock::time_point lastFired;
         // Main game loop
         while (true) // Loop that deals with gameplay
         {
-            time_t startTime,endTime;
+            high_resolution_clock::time_point startTime = high_resolution_clock::now();
+            high_resolution_clock::time_point endTime;
 
-            startTime = time(NULL);
+
+
 
             // will be changed later
             //cout<<startTime<<endl;;
@@ -284,11 +289,12 @@ int main()
             cScore = "Score: " +to_string(score);
             Score.setMessage(cScore);
 
-
+            duration<double> time_diff_between_shots = duration_cast<duration<double>>(startTime - lastFired);
 
             bool pendingEvent = checkEvent(event);
             if (pendingEvent)
             {
+
                 // Get the key pressed
                 char c = charFromEvent(event);
                 msg_cmd[msg_cmd.length() - 1] = c;
@@ -299,8 +305,11 @@ int main()
                     shooter.move(STEP_TIME, true);
                 else if(c == 'd')
                     shooter.move(STEP_TIME, false);
-                else if(c == 'w')
-                    bullets.push_back(shooter.shoot());
+                else if(c == 'w' && time_diff_between_shots.count()> 1/FIRE_RATE)
+                {    lastFired = high_resolution_clock::now();
+                     bullets.push_back(shooter.shoot());
+                }
+
                 else if(c == 'q')
                     return 0;
             }
@@ -334,8 +343,9 @@ int main()
                     break;
 
                 }
-                endTime = time(NULL);
-                track_time -= difftime(endTime,startTime);
+                endTime = high_resolution_clock::now();
+                duration<double> time_span = duration_cast<duration<double>>(endTime - startTime);
+                track_time -= (time_span).count();
                 continue;
 
 
@@ -350,14 +360,14 @@ int main()
 
             }
             wait(STEP_TIME);
-            endTime = time(NULL);
+            endTime = high_resolution_clock::now();
+            duration<double> time_span = duration_cast<duration<double>>(endTime - startTime);
+            track_time -= (time_span).count();
 
-            track_time -= difftime(endTime,startTime);
-            cout << difftime(endTime, startTime)<<endl;
             if(WAIT_TIME<0.75)
             {
 
-                WAIT_TIME += difftime(endTime,startTime);
+                WAIT_TIME += (time_span).count();
 
             }
 
