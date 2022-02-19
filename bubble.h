@@ -59,9 +59,11 @@ public:
     vector<Bubble> Split()
     {   vector<Bubble> newBubbles;
         if(get_radius()>minRadius){
-
+            //The smaller bubbles will move in opposite directions with slightly higher velocities.
             newBubbles.push_back(Bubble(get_center_x(), get_center_y(), get_radius()/2, -BUBBLE_DEFAULT_VX*1.2, vy, COLOR(255,105,180)));
             newBubbles.push_back(Bubble(get_center_x(), get_center_y(), get_radius()/2, BUBBLE_DEFAULT_VX*1.2, vy, COLOR(255,105,180)));
+
+            //Traverses the vector of split bubbles and sets their color
             for(int i =0; i<2;i++)
             {
                 newBubbles[i].setColour();
@@ -69,10 +71,11 @@ public:
             }
             return newBubbles;
         }
+        //If the smallest bubble is destroyed then returns an empty vector
         return newBubbles;
     }
 
-
+    //To deal with the colors of new bubbles.
     void setColour()
     {
         if(get_radius() == 2*BUBBLE_DEFAULT_RADIUS)
