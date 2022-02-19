@@ -10,6 +10,7 @@ const double STEP_TIME = 0.01;
 
 /* Game Vars */
 int LEVEL_INDEX =1; //tells you which level you're on
+int SCORE = 0;
 const double FIRE_RATE= 2;
 const int PLAY_Y_HEIGHT = 450;
 const int LEFT_MARGIN = 70;
@@ -55,15 +56,15 @@ vector<Bubble> create_bubbles(int level_index)
     else if(level_index == 2)
     {
 
-        bubbles.push_back(Bubble(WINDOW_X/2.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*2, -BUBBLE_DEFAULT_VX, 0, COLOR(255,105,180)));
-        bubbles.push_back(Bubble(WINDOW_X/4.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*2, BUBBLE_DEFAULT_VX, 0, COLOR(255,105,180)));
+        bubbles.push_back(Bubble(WINDOW_X/2.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*2, -BUBBLE_DEFAULT_VX, 0, COLOR(216,191,216)));
+        bubbles.push_back(Bubble(WINDOW_X/4.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*2, BUBBLE_DEFAULT_VX, 0, COLOR(216,191,216)));
 
     }
     else
     {
 
-        bubbles.push_back(Bubble(WINDOW_X/2.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, -BUBBLE_DEFAULT_VX, 0, COLOR(255,105,180)));
-        bubbles.push_back(Bubble(WINDOW_X/4.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, BUBBLE_DEFAULT_VX, 0, COLOR(255,105,180)));
+        bubbles.push_back(Bubble(WINDOW_X/2.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, -BUBBLE_DEFAULT_VX, 0, COLOR(75,0,130)));
+        bubbles.push_back(Bubble(WINDOW_X/4.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, BUBBLE_DEFAULT_VX, 0, COLOR(75,0,130)));
 
 
     }
@@ -133,7 +134,7 @@ bool CollisionWithPlayer(vector<Bubble> &bubbles,Shooter player)
 
 
 }
-string to_string(int n)  // converts integer to a string
+string toString(int n)  // converts integer to a string
 {
 
     if(n==0)
@@ -162,19 +163,28 @@ string to_string(int n)  // converts integer to a string
 void StartLevel(int levelIndex,vector<Bubble>& bubbles)
 {
 
-    Text LevelStartText(WINDOW_X/2,WINDOW_Y/2,"Level: " + to_string(levelIndex));
+    Text LevelStartText(WINDOW_X/2,WINDOW_Y/2,"Level: " + toString(levelIndex));
     LevelStartText.setColor(COLOR("red"));
     wait(0.75);
     bubbles = create_bubbles(levelIndex);
 }
+void ResetScore()
+{
+    SCORE = 0;
 
+}
 void GameOver(string condition)
 {
     if(condition == "lose")
     {
         Text loseText(WINDOW_X/2,WINDOW_Y/2,"GAME OVER!");
         loseText.setColor(COLOR("red"));
+        string endScore = "Your Score: "+toString(SCORE);
+        Text Score(WINDOW_X/2,2*WINDOW_Y/3,endScore);
+        Score.setColor(COLOR("blue"));
         wait(2);
+        ResetScore();
+        LEVEL_INDEX = 1;
 
     }
     else if(condition == "win")
@@ -207,13 +217,13 @@ int main()
     double WAIT_TIME = 0.75; // If there is a collision event between the player and the bubble, it is the time during which the player is invulnerable
     initCanvas("Bubble Trouble", WINDOW_X, WINDOW_Y);
 
-    int score;
+
 
 
 
     while(LEVEL_INDEX<=3) // Game Loop as long as the Level is within the level index
     {
-        score = (LEVEL_INDEX-1)*pow(2,LEVEL_INDEX-1);
+
 
         Line b1(0, PLAY_Y_HEIGHT, WINDOW_X, PLAY_Y_HEIGHT);
         b1.setColor(COLOR(0, 0, 255));
@@ -235,7 +245,7 @@ int main()
 
         Text charPressed(LEFT_MARGIN, BOTTOM_MARGIN, msg_cmd);
 
-        string currentLevel = "Level "+to_string(LEVEL_INDEX)+"/3";
+        string currentLevel = "Level "+toString(LEVEL_INDEX)+"/3";
         Text level((RIGHT_MARGIN+LEFT_MARGIN)/2,BOTTOM_MARGIN,currentLevel);
 
         string health_msg;
@@ -278,15 +288,15 @@ int main()
 
 
             //Health UI
-            health_msg = "Health: " +to_string(currentHP) +"/"+ to_string(totalHP);
+            health_msg = "Health: " +toString(currentHP) +"/"+ toString(totalHP);
             Health.setMessage(health_msg);
 
             //Time UI
-            cTime = "Time: " +to_string(track_time);
+            cTime = "Time: " +toString(track_time);
             Time.setMessage(cTime);
 
 
-            cScore = "Score: " +to_string(score);
+            cScore = "Score: " +toString(SCORE);
             Score.setMessage(cScore);
 
             duration<double> time_diff_between_shots = duration_cast<duration<double>>(startTime - lastFired);
@@ -322,7 +332,7 @@ int main()
 
             int scoreIncrement = CollisionOfBulletWithBubble(bubbles,bullets);
             has_collided_with_player = CollisionWithPlayer(bubbles,shooter);
-            score += scoreIncrement;
+            SCORE += scoreIncrement;
             if(bubbles.size()==0)
             {
                 GameOver("win");

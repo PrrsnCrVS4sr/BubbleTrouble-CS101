@@ -5,7 +5,7 @@ const int BUBBLE_START_X = 250;
 const int BUBBLE_START_Y = 50;
 const int BUBBLE_DEFAULT_RADIUS = 10;
 const int BUBBLE_RADIUS_THRESHOLD = 10;
-const int BUBBLE_DEFAULT_VX = 300;
+const int BUBBLE_DEFAULT_VX = 500;
 const int BUBBLE_DEFAULT_VY = 0;
 const int gravity = 40;
 class Bubble
@@ -24,7 +24,6 @@ public:
         circle = Circle(cx, cy, r);
         circle.setColor(color);
         circle.setFill(true);
-
         vx = vx_;
         vy = vy_;
     }
@@ -32,7 +31,7 @@ public:
     void nextStep(double t)
     {
         // move the bubble
-        vy = get_vy() + (gravity*t); // upgates y velocity due to gravity
+        vy = get_vy() + (gravity*t); // updates y velocity due to gravity
         double new_x = circle.getX() + vx*t;
         double new_y = circle.getY() + vy*t;
 
@@ -61,13 +60,32 @@ public:
     {   vector<Bubble> newBubbles;
         if(get_radius()>minRadius){
 
-            newBubbles.push_back(Bubble(get_center_x(), get_center_y(), get_radius()/2, -BUBBLE_DEFAULT_VX, 0, COLOR(255,105,180)));
-            newBubbles.push_back(Bubble(get_center_x(), get_center_y(), get_radius()/2, BUBBLE_DEFAULT_VX, 0, COLOR(255,105,180)));
+            newBubbles.push_back(Bubble(get_center_x(), get_center_y(), get_radius()/2, -BUBBLE_DEFAULT_VX*1.2, vy, COLOR(255,105,180)));
+            newBubbles.push_back(Bubble(get_center_x(), get_center_y(), get_radius()/2, BUBBLE_DEFAULT_VX*1.2, vy, COLOR(255,105,180)));
+            for(int i =0; i<2;i++)
+            {
+                newBubbles[i].setColour();
+
+            }
             return newBubbles;
         }
         return newBubbles;
     }
 
+
+    void setColour()
+    {
+        if(get_radius() == 2*BUBBLE_DEFAULT_RADIUS)
+        {
+            circle.setColor(COLOR(216,191,216));
+        }
+        if(get_radius()== BUBBLE_DEFAULT_RADIUS)
+        {
+
+            circle.setColor(COLOR(255,105,180));
+        }
+
+    }
     double get_radius()
     {
         // return the radius of the bubble

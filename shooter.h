@@ -4,7 +4,7 @@
 /* Shooter Vars */
 const int SHOOTER_START_X = 250;
 const int SHOOTER_START_Y = 425;
-const int SHOOTER_VX = 400;
+const int SHOOTER_VX = 600;
 
 /* Game Window Vars */
 const int WINDOW_X = 500;
