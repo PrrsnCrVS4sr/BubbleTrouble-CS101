@@ -83,7 +83,7 @@ vector<Bubble> create_bubbles(int level_index)
     {
          bubbles.push_back(Bubble(WINDOW_X/2.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, -BUBBLE_DEFAULT_VX, 0, COLOR(75,0,130)));
         bubbles.push_back(Bubble(WINDOW_X/4.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, BUBBLE_DEFAULT_VX, 0, COLOR(75,0,130)));
-        bubbles.push_back(Bubble(5*WINDOW_X/8.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, BUBBLE_DEFAULT_VX, 0, COLOR(216,191,216)));
+        bubbles.push_back(Bubble(5*WINDOW_X/8.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, BUBBLE_DEFAULT_VX,BUBBLE_DEFAULT_VX , COLOR(75,0,130)));
 
     }
 

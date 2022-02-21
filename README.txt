@@ -10,8 +10,9 @@ The following features has successfully been implemented:
     4. Bubbles of different sizes spawn in different levels. These larger bubbles into two, on collision until a certain size.
     5. HitPoints for the shooter has been implemented. The shooter has a total of 5HP.
        A clock counting backwards has also been implemented. The shooter gets a total of 45 seconds to destroy all bubbles.
-       As a sucessfull collision between bullet and bubble is detected,player score increases by 1.
-    6. A total of three levels has been implemented. Each level get progressively harder.
+       As a sucessfull collision between bullet and bubble is detected,player score increases by 1. As player and bubble collision happens,
+	player score decreases by 1. Also time decreases by 4secs.
+    6. A total of five levels has been implemented. Each level get progressively harder.
     7. Added a rate of fire system, so the player cannot spam bullets.
 
 
