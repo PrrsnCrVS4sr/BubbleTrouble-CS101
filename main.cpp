@@ -64,12 +64,26 @@ vector<Bubble> create_bubbles(int level_index)
         bubbles.push_back(Bubble(WINDOW_X/4.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*2, BUBBLE_DEFAULT_VX, 0, COLOR(216,191,216)));
 
     }
-    else
+    else if(level_index ==3)
     {
 
         bubbles.push_back(Bubble(WINDOW_X/2.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, -BUBBLE_DEFAULT_VX, 0, COLOR(75,0,130)));
         bubbles.push_back(Bubble(WINDOW_X/4.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, BUBBLE_DEFAULT_VX, 0, COLOR(75,0,130)));
 
+
+    }
+    else if(level_index ==4)
+    {
+        bubbles.push_back(Bubble(WINDOW_X/2.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, -BUBBLE_DEFAULT_VX, 0, COLOR(75,0,130)));
+        bubbles.push_back(Bubble(WINDOW_X/4.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, BUBBLE_DEFAULT_VX, 0, COLOR(75,0,130)));
+        bubbles.push_back(Bubble(5*WINDOW_X/8.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*2, BUBBLE_DEFAULT_VX, 0, COLOR(216,191,216)));
+
+    }
+    else
+    {
+         bubbles.push_back(Bubble(WINDOW_X/2.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, -BUBBLE_DEFAULT_VX, 0, COLOR(75,0,130)));
+        bubbles.push_back(Bubble(WINDOW_X/4.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, BUBBLE_DEFAULT_VX, 0, COLOR(75,0,130)));
+        bubbles.push_back(Bubble(5*WINDOW_X/8.0, BUBBLE_START_Y, BUBBLE_DEFAULT_RADIUS*4, BUBBLE_DEFAULT_VX, 0, COLOR(216,191,216)));
 
     }
 
@@ -216,9 +230,9 @@ void GameOver(string condition) // handles Game Over states
     {
 
 
-        if(LEVEL_INDEX == 3) // executed when player beats all levels
+        if(LEVEL_INDEX == 5) // executed when player beats all levels
         {
-            Text winText(WINDOW_X/2,WINDOW_Y/2,"CONGRATULATIONS YOU BEAT ALL LEVELS");
+            Text winText(WINDOW_X/2,WINDOW_Y/2,"CONGRATULATIONS YOU WIN");
             winText.setColor(COLOR("green"));
             string endScore = "Your Score: "+toString(SCORE);
             Text Score(WINDOW_X/2,2*WINDOW_Y/3,endScore);
@@ -243,6 +257,8 @@ void GameOver(string condition) // handles Game Over states
     }
 
 }
+
+
 int main()
 {
     double WAIT_TIME = 0.75; // If there is a collision event between the player and the bubble, it is the time during which the player is invulnerable
@@ -252,7 +268,7 @@ int main()
 
 
 
-    while(LEVEL_INDEX<=3) // Game Loop as long as the Level is within the level index
+    while(LEVEL_INDEX<=5) // Game Loop as long as the Level is within the level index
     {
 
 
@@ -278,7 +294,7 @@ int main()
 
         //GAME UI
         //Level Text
-        string currentLevel = "Level "+toString(LEVEL_INDEX)+"/3";
+        string currentLevel = "Level "+toString(LEVEL_INDEX)+"/5";
         Text level((RIGHT_MARGIN+LEFT_MARGIN)/2,BOTTOM_MARGIN,currentLevel);
 
         //Health Text
@@ -391,6 +407,9 @@ int main()
             {
                 WAIT_TIME = 0;
                 currentHP--;
+                SCORE--;
+                track_time -=4;
+
 
                 shooter.ChangeColourForAMoment(0.2); //Change color when collision is detected
                 if(currentHP<=0)

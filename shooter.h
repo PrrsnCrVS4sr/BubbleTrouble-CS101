@@ -2,7 +2,7 @@
 #include "bullet.h"
 
 /* Shooter Vars */
-const int SHOOTER_START_X = 250;
+const int SHOOTER_START_X = 200;
 const int SHOOTER_START_Y = 425;
 const int SHOOTER_VX = 600;
 
